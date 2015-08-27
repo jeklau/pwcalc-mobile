@@ -1,0 +1,237 @@
+/*
+ * (C) Copyright P.Morjan 2014
+ * All rights reserved.
+ */
+
+.ui-page,
+.ui-bar-b,
+.ui-overlay-b {
+    background-color: black;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+.ui-header {
+    background-color: black;
+    border: none;
+    border-bottom: 2px solid #2ad;
+}
+
+.ui-header .ui-title {
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0 20%;
+}
+
+.menu-item .ui-btn {
+    font-weight: normal;
+}
+
+.menu-item.ui-last-child {
+    border: none;
+    border-top: 2px solid #2ad;
+}
+
+.center80 {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.center90 {
+    margin: 0 auto;
+    width: 90%;
+}
+
+.input {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: normal;
+    text-shadow: none;
+}
+
+.ui-focus,.ui-btn:focus {
+    border: 1px solid #2ad !important;
+}
+
+#selectPwlen-button.ui-focus,
+#cfgDefaultPwlen-button.ui-focus {
+    border: none !important;
+    box-shadow: none !important;
+    box-shadow: none;
+}
+
+.ui-btn.ui-state-disabled {
+    opacity: 1;
+    color: grey;
+}
+
+.ui-collapsible-inset {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.ui-li-count {
+    border-width: 0;
+    background: transparent !important;
+}
+
+.ui-btn-right, .ui-btn-left {
+    background-color: transparent !important;
+    border: none;
+}
+
+.liAlias {
+    font-family: monospace;
+    font-weight: normal;
+}
+
+.password {
+    font-size:16px;
+    font-family: monospace;
+    margin:18px auto 8px auto;
+    text-align:center;
+    padding:5px;
+    opacity: 1;
+    color: #2ad;
+}
+
+.password-disabled {
+    color:#294e5c;
+}
+
+.popupClipboard {
+    display: block;
+    opacity: 0.95;
+    left: 10%;
+    right: 10%;
+    text-align: center;
+    background-color:black;
+    padding: 28px;
+    border: 1px solid white;
+}
+
+.qrcode {
+    display:table;
+    margin: 0 auto;
+    padding: 0 ;
+    border: none;
+}
+
+.ui-btn.ui-popup {
+    margin: 0 auto;
+    padding: 0;
+    border: 0;
+}
+
+.ui-popup-screen.in {
+    /*opacity: 1;*/
+    background-color: black;
+}
+
+#qrcodeBig-screen.ui-popup-screen.in {
+    opacity: 1;
+}
+
+.code {
+    white-space: pre;
+    font-family: monospace;
+    font-size: 14px;
+    color: #22aadd;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+}
+
+.tab {
+    margin-left: 20px;
+}
+
+.about li {
+    padding: 0.4em;
+}
+
+.about {
+    font-size: 14px;
+    padding: 3px;
+    font-weight: normal;
+    hyphens: auto;
+}
+
+.about ul {
+    padding-left: 1em;
+}
+
+.about pre {
+    font-size: 14px;
+    color: #22aadd;
+}
+
+.popupMenu {
+   min-width: 130px;
+   position: fixed;
+   top: 45px;
+   right: 0;
+}
+
+.disableClick {
+    pointer-events: none;
+    color: #555 !important;
+}
+
+.ui-page-theme-b div.ui-input-text {
+    background-color: black;
+    border: 0;
+    border-bottom: 2px solid #555;
+}
+
+.ui-page-theme-b div.ui-input-text.ui-focus {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: 0 !important;
+    border-bottom: 2px solid #2ad !important;
+}
+
+div.ui-input-text:after {
+    content: "";
+    background-color: #555;
+    position: absolute;
+    bottom: -1px; left: -1px; height: 8px; width: 2px;
+}
+
+div.ui-input-text:before {
+    content: "";
+    background-color: #555;
+    position: absolute;
+    bottom: -1px; right: -1px; height: 8px; width: 2px;
+}
+
+div.ui-input-text.ui-focus:after {
+    content: "";
+    background-color: #2ad;
+    position: absolute;
+    bottom: -1px; left: -1px; height: 8px; width: 2px;
+}
+
+div.ui-input-text.ui-focus:before {
+    content: "";
+    background-color: #2ad;
+    position: absolute;
+    bottom: -1px; right: -1px; height: 8px; width: 2px;
+}
+
+/* remove hover effect on buttons */
+.ui-page-theme-b .ui-btn:active,
+html .ui-bar-b .ui-btn:active,
+html .ui-body-b .ui-btn:active,
+html body .ui-group-theme-b .ui-btn:active,
+html head+body .ui-btn.ui-btn-b:active {
+    background-color: #333;
+}
+
+.promo {
+    margin: 0 auto;
+}
+
+.hidden {
+    visibility: hidden;
+}

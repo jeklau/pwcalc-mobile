@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<!--
+(C) Copyright P.Morjan 2014
+All rights reserved.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <link rel="stylesheet" href="js/libs/jquery-mobile/jquery.mobile-1.4.4.min.css" />
+        <link rel="stylesheet" href="css/app.css" />
+        <title>SHA1 Password Calculator</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/libs/jquery/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/libs/jquery-mobile/jquery.mobile-1.4.4.min.js"></script>
+        <script type="text/javascript" src="js/libs/knockout/knockout-3.2.0.js"></script>
+        <script type="text/javascript" src="js/libs/knockout.localStorage.js"></script>
+        <script type="text/javascript" src="js/libs/qrcode.js"></script>
+        <script type="text/javascript" src="js/libs/sha1.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="js/app.importer.js"></script>
+        <script type="text/javascript" src="js/app.ViewModel.js"></script>
+
+        <div id="qrcodeShare"></div>
+
+        <div data-role="page" data-theme="b" id="index" data-ajax="false" class="index">
+
+            <div data-role="popup" id="popupMenu" data-theme="b" data-history="false" data-position-to="window" class="popupMenu">
+                <ul data-role="listview" data-icon="false" data-inset="false">
+                    <li class="menu-item" data-bind="visible: hasCordova">
+                        <a href="#" id="aImport" data-bind="css: { 'disableClick': !hasCordova}">
+                            Import Aliases from Clipboard
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" id="aShareText" data-bind="css:{ 'disableClick': recentAliases().length < 1}">
+                            Share Aliases as Text
+                        </a>
+                    </li>
+                    <li class="menu-item" data-bind="visible: hasCordova">
+                        <a href="#" id="aShareQrcode" data-bind="css: { 'disableClick': !(recentAliases().length > 0 && hasCordova)}">
+                            Share Aliases as QR code
+                        </a>
+                    </li>
+                    <li class="menu-item" data-bind="visible: hasCordova">
+                        <a href="#" id="aSharePwQrcode" data-bind="css: { 'disableClick': !(password().length > 0 && hasCordova)}">
+                            Share Password as QR code
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#settings" data-transition="slide">
+                            Settings
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#about" data-transition="slide">
+                            About
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b"
+                 id="header" data-fullscreen="false">
+                <a href="#popupMenu" data-rel="popup" data-icon="bars" data-iconpos="notext" id="btMenu"
+                   data-shadow="false" data-icon-shadow="false" class="ui-btn-right ui-nodisc-icon" >Popup</a>
+
+                <h2>SHA1 Password Calculator</h2>
+            </div>
+
+            <div data-role="content" class="ui-nodisc-icon center80 hidden">
+                <input id="alias" type="text" class="input" placeholder="alias"  autocomplete="off"
+                       data-clear-btn="true" spellcheck="false" data-corners="false"
+                       data-bind="textInput: curAlias"/>
+                <input id="secret" type="password" class="input" placeholder="secret" autocomplete="off"
+                       data-clear-btn="true" data-corners="false"
+                       data-bind="textInput: secret"/>
+                <p class="password"
+                   data-bind="text: !password().length ? '<-- password -->' : password,
+                               css: { 'password-disabled': !password()}">
+                </p>
+
+                <div class="ui-grid-a center80">
+                    <div class="ui-block-a">
+                        <a href="#" id="btCopy" class="ui-btn ui-corner-all"
+                           data-bind="css: { 'ui-state-disabled': !password()}">
+                            Copy
+                        </a>
+                    </div>
+                    <div class="ui-block-b">
+                        <select id="selectPwlen" data-native-menu="true" class="ui-btn-inline"
+                            data-bind="options: pwlens, value: curPwlen">
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div id="aliasCollapse" data-role="collapsible" data-collapsed="true" data-mini="true"
+                    data-bind="css: { 'ui-state-disabled': !recentAliases().length}">
+                    <h4>Recent Aliases (<span data-bind="text: recentAliases().length"></span>)</h4>
+                    <ul data-role="listview" id="aliasList" data-split-icon="delete" data-scroll="true"
+                        data-bind="foreach:  recentAliases">
+                        <li>
+                            <a href="#" class="liAlias" data-bind="click: $parent.select">
+                                <span data-bind="text: alias"></span>
+                                <span data-bind="text: pwlen" class="ui-li-count"></span>
+                            </a>
+                            <a href="#" class="liDelete" data-bind="click: $parent.remove"></a>
+                        </li>
+                    </ul>
+                </div>
+                <p style="margin-bottom: 25px;">
+                <div id="qrcode" class="ui-btn qrcode"></div>
+            </div><!-- role="content"-->
+
+            <div data-role="popup" data-transition="pop" data-corners="false" data-shadow="false" id="qrcodeBig"
+                 class="ui-btn qrcodeBig" onclick="$(this).popup('close')">
+            </div>
+
+        </div><!-- data-role="page" -->
+
+        <div data-role="page" data-theme="b"  id="about" class="about" >
+
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b" class="ui-nodisc-icon">
+                <h1>About</h1>
+                <a href="#index" data-icon="back" data-iconpos="notext"
+                   data-transition="slide" data-direction="reverse">Back</a>
+            </div>
+
+            <div data-role="content" class="center90">
+                <p>
+                    The SHA1 Password Calculator <i>Pwcalc</i> works as safely as a meat grinder:
+                       If you put in a pig and turn the crank,
+                       you will get minced meat.
+                       But pushing back the minced meat while turning the crank
+                       backwards, will not bring back the pig.<br>
+                    That is quite secure.
+                <p>
+                    <br>
+                    In a simplified form it looks like this:
+                    <p>
+                    <span class="code tab">secret word + alias | SHA1 | Base64</span>
+                    <br>
+                    <span class="code tab">  = password</span>
+                <p>
+                   You chose a single secret word
+                   and an alias for the service the password is needed for.
+                <p>
+                   <span class="code tab">mysecret + gmail.com</span>
+                <p>
+                   This is combined to a single string (the pic).
+                    <p>
+                    <span class="code tab">mysecretgmail.com</span>
+                <p>
+                    Next the cryptographic hash function
+                    <span class="code">SHA1</span> is applied to this compound word,
+                    which produces a 160-bit hash value typically rendered
+                    as hexadecimal number:
+                <p class="tab">
+                    <span class="code">5e63</span>
+                    <span class="code">2f05</span>
+                    <span class="code">760b</span>
+                    <span class="code">5563</span>
+                    <span class="code">a1d9</span>
+
+                    <br class="tab">
+                    <span class="code">ad9e</span>
+                    <span class="code">e555</span>
+                    <span class="code">540d</span>
+                    <span class="code">7c19</span>
+                    <span class="code">9c65</span>
+                <p>
+                    These 40 digits are then taken as (binary) input for the
+                    <span class="code">Base64</span> function which
+                    produces the password (the minced meat):
+                <p class="tab">
+                    <span class="code">XmMv</span>
+                    <span class="code">BXYL</span>
+                    <span class="code">VWOh</span>
+                    <span class="code">2a2e</span>
+                    <span class="code">5VVU</span>
+                    <span class="code">DXwZ</span>
+                    <span class="code">nGU=</span>
+                <p>
+                    This unique password cannot by any means be traced back to
+                    the secret word or alias.
+                <hr>
+                <ul>
+                    <li>
+                        This password calculation based on SHA1 is deterministic:
+                        when it is invoked twice on an identical word, it always produces
+                        the same password.
+                    </li>
+                    <li>
+                        It is not invertible, meaning that it is not possible to
+                        reconstruct the alias nor the secret word by knowing the password.
+                        It is one way only, like a meat grinder.
+                    </li>
+                    <li>
+                        Even changing a single character in the secret word or alias
+                        results in a completely different password.
+                        This makes it possible to calculate many different passwords
+                        by remembering only one secret word.
+                    </li>
+                    <li>
+                    The Base64 function does not change the quality or uniqueness
+                    of the hash value. It only extends the character set
+                    from hexadecimal [0-9a-f] to [0-9A-Za-z/+=].
+
+                    </li>
+                    <li>
+                        Neither the alias nor the method of how they are
+                        calculated are confidential.
+                        The only confidential part is the secret word.
+                    </li>
+                    <li>
+                        The method is simple and elegant. However it requires some
+                        limitations that are deliberately accepted. E.g. the character
+                        set used for the calculated password cannot be specified precisely.
+                        You can't add more special characters.
+                    </li>
+                </ul>
+                <hr>
+                <p>
+                    Although all this might seem complicated it is actually technically
+                    quite simple.
+                <p>
+                    On standard MacOS X or Linux the you can build
+                    a Password Calculator in a terminal with existing commands :
+
+                <pre class="code"><code>   echo -n "mysecretgmail.com" \
+       | shasum \
+       | xxd -r -p \
+       | base64
+
+   XmMvBXYLVWOh2a2e5VVUDXwZnGU=
+</code></pre>
+                <p>
+                    On Linux replace <span style="font-family:courier;">shasum</span> by <span style="font-family:courier;">sha1sum</span>.
+                <hr>
+                Version: <span data-bind="text: appVersion"></span>
+                <p>
+                <div class="promo">
+                    <img alt="Android app on Google Play" src="img/playstore.png" style="float:left"  />
+                    <img alt="Chrome app on Google Web Store" src="img/webstore.png" style="float:right" />
+                </div>
+            </div><!-- data-role="content" -->
+        </div><!-- data-role="page" -->
+
+        <div data-role="page" data-theme="b"  id="settings" class="settings" >
+
+            <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="b" class="ui-nodisc-icon">
+                <h1>Settings</h1>
+                <a href="#index" data-icon="back" data-iconpos="notext"
+                   data-transition="slide" data-direction="reverse">Back</a>
+            </div>
+            <p>
+            <div data-role="content" class="center90">
+                <p>
+                <div class="ui-grid-a">
+                    <!-- FIXME -->
+                    <div class="ui-block-a" style="text-align: center; padding-top: 10px">
+                        Default Password Length
+                    </div>
+                    <div class="ui-block-b">
+                        <select id="cfgDefaultPwlen" data-native-menu="true"
+                            data-bind="options: pwlens, value: cfgDefaultPwlen">
+                        </select>
+                    </div>
+                </div><!-- /grid-a -->
+            </div><!-- data-role="content"-->
+
+         </div><!-- data-role="page" -->
+
+        <script type="text/javascript">
+            if (window.hasOwnProperty('cordova')) {
+                document.addEventListener('deviceready', app.onDeviceReady, false);
+            } else {
+                window.onload = app.onDeviceReady;
+            }
+        </script>
+    </body>
+</html>
