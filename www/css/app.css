@@ -49,10 +49,6 @@
     text-shadow: none;
 }
 
-.ui-focus,.ui-btn:focus {
-    border: 1px solid #2ad !important;
-}
-
 #selectPwlen-button.ui-focus,
 #cfgDefaultPwlen-button.ui-focus {
     border: none !important;
@@ -220,12 +216,9 @@ div.ui-input-text.ui-focus:before {
 }
 
 /* remove hover effect on buttons */
-.ui-page-theme-b .ui-btn:active,
-html .ui-bar-b .ui-btn:active,
-html .ui-body-b .ui-btn:active,
-html body .ui-group-theme-b .ui-btn:active,
-html head+body .ui-btn.ui-btn-b:active {
-    background-color: #333;
+.ui-focus,
+.ui-btn:focus {
+    box-shadow: none !important;
 }
 
 .promo {
