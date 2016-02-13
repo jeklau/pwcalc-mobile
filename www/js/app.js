@@ -75,29 +75,6 @@ var app = (function () {
             $("#qrcodeBig").popup("open");
     };
 
-    var shareQrcode = function (text, name) {
-        var size;
-        if (text.length < 30) {
-            size = 128;
-        } else if (text.length < 100) {
-            size = 256;
-        } else if (text.length < 250) {
-            size = 512;
-        } else if (text.length < 500) {
-            size = 1024;
-        } else {
-            alert("Text too large, can't create qrcode");
-            return;
-        }
-        var $div = $("#qrcodeShare");
-        var qrcodeShare = qrcode($div, text, size);
-        if (!qrcodeShare) return;
-        var dataURL = $("#qrcodeShare canvas")[0].toDataURL();
-        window.plugins.socialsharing.share(null, name, dataURL, null);
-        $div.empty();
-        qrcodeShare.clear();
-    };
-
     var shareText = function (text) {
         if (!(text)) {return; }
         if (utils.hasCordova) {
@@ -126,31 +103,6 @@ var app = (function () {
             } catch (e) {
                 alert (e);
             }
-        }
-    };
-
-    var upgrade = function (addFunc) {
-        /**
-         * old localstorage:  {item: "{"foo":{"pwlen":16},"bar":{"pwlen":8}}", length: 1}
-         * new localstorage:  {aliases: "[{"alias":"bar","pwlen":8},{"alias":"foo","pwlen":16}]", length: 1}
-         */
-        try {
-            var old = JSON.parse(localStorage.getItem("item"));
-            if (old) {
-                localStorage.removeItem("item");
-                for (var alias in old) {
-                    if (old.hasOwnProperty(alias)) {
-                        addFunc(alias, old[alias].pwlen);
-                    }
-                }
-                console.log("localStorage update succeeded");
-            }
-            old = JSON.parse(localStorage.getItem("resetOnPause"));
-            if (old !== null) {
-                localStorage.removeItem("resetOnPause");
-            }
-        } catch (e) {
-            console.log(e);
         }
     };
 
@@ -232,17 +184,6 @@ var app = (function () {
             shareText(model.recentAliasesToStr());
         });
 
-        $('#aShareQrcode').on('click', function () {
-            $('#popupMenu').popup('close');
-            shareQrcode(model.recentAliasesToStr(), 'PwcalcAliases');
-        });
-
-
-        $("#aSharePwQrcode").on("click", function () {
-            $("#popupMenu").popup("close");
-            shareQrcode(model.password(), "PwcalcPassword");
-        });
-
         $("#alias").keydown(function (event) {
             var code = event.keyCode || event.which;
             return code === KEY_CODE_SPACE ? false : true;
@@ -256,15 +197,13 @@ var app = (function () {
         });
 
         model.reset();
-        upgrade(model.add);
 
         $(".hidden").removeClass("hidden");
 
     };
 
     return {
-        onDeviceReady: onDeviceReady,
-        upgrade: upgrade
+        onDeviceReady: onDeviceReady
     };
 })();
 

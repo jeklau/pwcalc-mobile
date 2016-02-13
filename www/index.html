@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-(C) Copyright P.Morjan 2014
+(C) Copyright P.Morjan 2016
 All rights reserved.
 -->
 <html>
@@ -38,17 +38,7 @@ All rights reserved.
                     </li>
                     <li class="menu-item">
                         <a href="#" id="aShareText" data-bind="css:{ 'disableClick': recentAliases().length < 1}">
-                            Share Aliases as Text
-                        </a>
-                    </li>
-                    <li class="menu-item" data-bind="visible: hasCordova">
-                        <a href="#" id="aShareQrcode" data-bind="css: { 'disableClick': !(recentAliases().length > 0 && hasCordova)}">
-                            Share Aliases as QR code
-                        </a>
-                    </li>
-                    <li class="menu-item" data-bind="visible: hasCordova">
-                        <a href="#" id="aSharePwQrcode" data-bind="css: { 'disableClick': !(password().length > 0 && hasCordova)}">
-                            Share Password as QR code
+                            Share Aliases
                         </a>
                     </li>
                     <li class="menu-item">
@@ -142,9 +132,9 @@ All rights reserved.
                     <br>
                     In a simplified form it looks like this:
                     <p>
-                    <span class="code tab">secret word + alias | SHA1 | Base64</span>
+                    <span class="code tab">secret word + alias | SHA1 </span>
                     <br>
-                    <span class="code tab">  = password</span>
+                    <span class="code tab"> | Base64 = password</span>
                 <p>
                    You chose a single secret word
                    and an alias for the service the password is needed for.

@@ -83,9 +83,7 @@ app.ViewModel = function () {
     };
 
     if (utils.hasCordova) {
-        cordova.getAppVersion(function (version) {
-            self.appVersion(version);
-        });
+        self.appVersion(AppVersion.version);
      };
 };
 

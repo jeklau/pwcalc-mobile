@@ -50,30 +50,20 @@ In plain Linux the password can be calculated like this:
     XmMvBXYLVWOh2a2e5VVUDXwZnGU=
 ````
 
-# Instructions to build Pwcalc for Android
+# Build Instructions for Android
 
 This app is made with the Apache Cordova framework.
 See https://cordova.apache.org/ for details.
 
-clone pwcalc-mobile:
 ```
 git clone https://github.com/pmorjan/pwcalc-mobile.git
-```
-build a Cordova skeleton:
-```
-cordova create dummy com.example.myPwcalc myPwcalc
-```
-merge the Cordova skeleton into the myPwcalc directory:
-```
-cp -af dummy/{hooks,platforms,plugins,res,config.xml} myPwcalc/
-```
-build the application
-```
-cd myPwcalc
+cd pwcalc-mobile
 cordova platform add android
-cordova plugins add com.verso.cordova.clipboard
-cordova plugins add uk.co.whiteoctober.cordova.appversion
-cordova plugins add nl.x-services.plugins.socialsharing
+cordova plugins add cordova-plugin-x-socialsharing
+cordova plugins add cordova-universal-clipboard
+cordova plugin  add cordova-plugin-appversion
+git apply remove-permissions.patch
 cordova build
 ```
+
 
