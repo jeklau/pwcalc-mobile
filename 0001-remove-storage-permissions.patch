@@ -1,0 +1,20 @@
+This patch removes storage permissions
+
+ Apply this after 'cordova add plugin cordova-plugin-x-socialsharing' 
+ but before running 'cordova add platform android'
+
+diff --git a/plugins/cordova-plugin-x-socialsharing/plugin.xml b/plugins/cordova-plugin-x-socialsharing/plugin.xml
+index 3b9c728..613019a 100755
+--- a/plugins/cordova-plugin-x-socialsharing/plugin.xml
++++ b/plugins/cordova-plugin-x-socialsharing/plugin.xml
+@@ -55,10 +55,6 @@
+       </feature>
+     </config-file>
+ 
+-    <config-file target="AndroidManifest.xml" parent="/*">
+-      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+-    </config-file>
+-
+     <source-file src="src/android/nl/xservices/plugins/SocialSharing.java" target-dir="src/nl/xservices/plugins"/>
+   </platform>
+ 

@@ -1,7 +1,9 @@
-This patch removes all app permissions, including the defaults
+This patch removes all network permissions
+
+ Apply this before after running 'cordova add platform android'
 
 diff --git a/platforms/android/AndroidManifest.xml b/platforms/android/AndroidManifest.xml
-index 09cb52d..10b519f 100644
+index e0a3925..10b519f 100644
 --- a/platforms/android/AndroidManifest.xml
 +++ b/platforms/android/AndroidManifest.xml
 @@ -1,9 +1,6 @@
@@ -14,24 +16,3 @@ index 09cb52d..10b519f 100644
      <application android:hardwareAccelerated="true" android:icon="@drawable/icon" android:label="@string/app_name" android:supportsRtl="true">
          <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/activity_name" android:launchMode="singleTop" android:name="MainActivity" android:theme="@android:style/Theme.Black.NoTitleBar" android:windowSoftInputMode="adjustResize">
              <intent-filter android:label="@string/launcher_name">
-@@ -13,5 +10,4 @@
-         </activity>
-     </application>
-     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="22" />
--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
- </manifest>
-diff --git a/plugins/cordova-plugin-x-socialsharing/plugin.xml b/plugins/cordova-plugin-x-socialsharing/plugin.xml
-index 3b9c728..613019a 100755
---- a/plugins/cordova-plugin-x-socialsharing/plugin.xml
-+++ b/plugins/cordova-plugin-x-socialsharing/plugin.xml
-@@ -55,10 +55,6 @@
-       </feature>
-     </config-file>
- 
--    <config-file target="AndroidManifest.xml" parent="/*">
--      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
--    </config-file>
--
-     <source-file src="src/android/nl/xservices/plugins/SocialSharing.java" target-dir="src/nl/xservices/plugins"/>
-   </platform>
- 
