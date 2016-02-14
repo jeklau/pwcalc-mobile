@@ -58,10 +58,10 @@ See https://cordova.apache.org/ for details.
 ```
 git clone https://github.com/pmorjan/pwcalc-mobile.git
 cd pwcalc-mobile
-cordova plugins add cordova-plugin-x-socialsharing
+cordova plugin add cordova-plugin-x-socialsharing
 git apply 0001-remove-storage-permissions.patch
-cordova plugins add cordova-universal-clipboard
-cordova plugin  add cordova-plugin-appversion
+cordova plugin add cordova-universal-clipboard
+cordova plugin add cordova-plugin-appversion
 cordova platform add android
 git apply 0002-remove-network-permissions.patch
 cordova build

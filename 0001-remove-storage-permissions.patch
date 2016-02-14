@@ -1,7 +1,7 @@
 This patch removes storage permissions
 
- Apply this after 'cordova add plugin cordova-plugin-x-socialsharing' 
- but before running 'cordova add platform android'
+ Apply this patch after 'cordova plugin add cordova-plugin-x-socialsharing'
+ but before running 'cordova platform add android'
 
 diff --git a/plugins/cordova-plugin-x-socialsharing/plugin.xml b/plugins/cordova-plugin-x-socialsharing/plugin.xml
 index 3b9c728..613019a 100755

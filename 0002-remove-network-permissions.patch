@@ -1,6 +1,6 @@
 This patch removes all network permissions
 
- Apply this before after running 'cordova add platform android'
+ Apply this patch after running 'cordova platform add android'
 
 diff --git a/platforms/android/AndroidManifest.xml b/platforms/android/AndroidManifest.xml
 index e0a3925..10b519f 100644
